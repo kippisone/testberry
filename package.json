@@ -18,5 +18,9 @@
     "bench",
     "benchmark",
     "performance"
-  ]
+  ],
+  "devDependencies": {
+    "inspect.js": "^0.1.1",
+    "sinon": "^1.17.4"
+  }
 }
