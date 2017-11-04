@@ -12,8 +12,8 @@ npm i testberry --save-dev
 ### Usage
 
 ```js
-let testberry = require('testberry');
-let inspect = require('inspect');
+const testberry = require('testberry');
+const inspect = require('inspect');
 
 describe('Benchmark testing', function() {
   it('String starts with ', function() {
@@ -28,8 +28,8 @@ describe('Benchmark testing', function() {
     inspect(result).isTrue();
 
     // Next test
-    testberry.test('.indexOf(0)', function() {
-      result = 'foo'.indexOf(0) === 'f';
+    testberry.test('.charAt(0)', function() {
+      result = 'foo'.charAt(0) === 'f';
     });
 
     inspect(result).isTrue();
@@ -40,6 +40,26 @@ describe('Benchmark testing', function() {
     });
 
     inspect(result).isTrue();
+  });
+});
+```
+
+### Async testing
+
+```js
+const testberry = require('testberry');
+const inspect = require('inspect');
+
+describe('Benchmark async testing', function() {
+  it('String starts with ', function() {
+    let result;
+
+    // Calculate evaluation time
+    testberry.testAsync('.setTimeout()', function(done) {
+      setTimeout(() => {
+        done()
+      }, 0);
+    });
   });
 });
 ```

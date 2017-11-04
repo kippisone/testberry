@@ -77,7 +77,6 @@ describe('Testberry', function() {
       });
 
       let profiling = testberry.getLastProfiling();
-      inspect.print(profiling);
       inspect(profiling).hasProps({
         args: ['blub', sinon.match.func],
         callTime: sinon.match(/^\d+/),
@@ -99,7 +98,6 @@ describe('Testberry', function() {
       testberry.profile(func, 'blub');
 
       let profiling = testberry.getLastProfiling();
-      inspect.print(profiling);
       inspect(profiling).hasProps({
         args: ['blub', sinon.match.func],
         callTime: sinon.match(/^\d+/),
@@ -123,7 +121,6 @@ describe('Testberry', function() {
 
       return p.then(res => {
         let profiling = testberry.getLastProfiling();
-        inspect.print(profiling);
         inspect(profiling).hasProps({
           args: ['blub', sinon.match.func],
           callTime: sinon.match(/^\d+/),
@@ -137,6 +134,44 @@ describe('Testberry', function() {
           }]
         });
       });
+    });
+  });
+
+  describe('Benchmark async testing', function() {
+    it('String starts with ', function() {
+      testberry.testAsync('.setTimeout()', function(done) {
+        setTimeout(() => {
+          done()
+        }, 0);
+      });
+    });
+  });
+
+  describe('Benchmark testing', function() {
+    it('String starts with ', function() {
+      let result;
+
+      // Calculate evaluation time
+      testberry.test('.startsWith()', function() {
+        result = 'foo'.startsWith('f');
+      });
+
+      // Check whether test has worked very well
+      inspect(result).isTrue();
+
+      // Next test
+      testberry.test('.charAt(0)', function() {
+        result = 'foo'.charAt(0) === 'f';
+      });
+
+      inspect(result).isTrue();
+
+      // And a third one
+      testberry.test('.test()', function() {
+        result = /^f/.test('foo');
+      });
+
+      inspect(result).isTrue();
     });
   });
 });
