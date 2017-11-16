@@ -1,21 +1,7 @@
-Testberry
-=========
+let testberry = require('../lib/testberry');
+let inspect = require('inspect.js');
 
-Testberry is a performance and benchmark testing framework for Node.js and Mocha
-
-## Installation
-
-```shell
-npm i testberry --save-dev
-```
-
-### Usage
-
-```js
-const testberry = require('testberry');
-const inspect = require('inspect');
-
-describe('Benchmark sync', function() {
+describe('[Benchmark]', function() {
   describe('Runtime for 1000 iterations', function() {
     it('String starts with', function() {
       let result;
@@ -28,10 +14,6 @@ describe('Benchmark sync', function() {
       // Check whether test has worked very well
       inspect(result).isTrue();
 
-    // Next test
-    testberry.test('.charAt(0)', function() {
-      result = 'foo'.charAt(0) === 'f';
-    });
       // Next test
       testberry.test('.indexOf(0)', function() {
         result = 'foo'.indexOf('f') === 0;
@@ -76,24 +58,3 @@ describe('Benchmark sync', function() {
     });
   })
 });
-```
-
-### Async testing
-
-```js
-const testberry = require('testberry');
-const inspect = require('inspect');
-
-describe('Benchmark async testing', function() {
-  it('String starts with', function() {
-    let result;
-
-    // Calculate evaluation time
-    testberry.testAsync('.setTimeout()', function(done) {
-      setTimeout(() => {
-        done()
-      }, 0);
-    });
-  });
-});
-```
