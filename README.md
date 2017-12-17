@@ -39,7 +39,56 @@ describe('Benchmark testing', () => {
       result = /^f/.test('foo')
     })
 
-    inspect(result).isTrue()
+      inspect(result).isTrue();
+    });
+  });
+
+  describe('Invocations in 1000 ms', function() {
+    it('String starts with', function() {
+      let result;
+
+      // Calculate evaluation time
+      testberry.perf('.startsWith()', 100, function() {
+        result = 'foo'.startsWith('f');
+      });
+
+      // Check whether test has worked very well
+      inspect(result).isTrue();
+
+      // Next test
+      testberry.perf('.indexOf("f")', 100, function() {
+        result = 'foo'.indexOf('f') === 0;
+      });
+
+      inspect(result).isTrue();
+
+      // And a third one
+      testberry.perf('.test()', 100, function() {
+        result = /^f/.test('foo');
+      });
+
+      inspect(result).isTrue();
+    });
   })
-})
+});
+```
+
+### Async testing
+
+```js
+const testberry = require('testberry');
+const inspect = require('inspect');
+
+describe('Benchmark async testing', function() {
+  it('String starts with', function() {
+    let result;
+
+    // Calculate evaluation time
+    testberry.testAsync('.setTimeout()', function(done) {
+      setTimeout(() => {
+        done()
+      }, 0);
+    });
+  });
+});
 ```
