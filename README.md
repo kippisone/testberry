@@ -12,37 +12,32 @@ npm i testberry --save-dev
 ### Usage
 
 ```js
-const testberry = require('testberry');
-const inspect = require('inspect');
+import testberry from 'testberry'
+import inspect from 'inspect'
 
-describe('Benchmark sync', function() {
-  describe('Runtime for 1000 iterations', function() {
-    it('String starts with', function() {
-      let result;
+describe('Benchmark testing', () => {
+  it('String starts with ', () => {
+    let result
 
-      // Calculate evaluation time
-      testberry.test('.startsWith()', function() {
-        result = 'foo'.startsWith('f');
-      });
+    // Calculate evaluation time
+    testberry.test('.startsWith()', () => {
+      result = 'foo'.startsWith('f')
+    })
 
-      // Check whether test has worked very well
-      inspect(result).isTrue();
+    // Check whether test has worked very well
+    inspect(result).isTrue()
 
     // Next test
-    testberry.test('.charAt(0)', function() {
-      result = 'foo'.charAt(0) === 'f';
-    });
-      // Next test
-      testberry.test('.indexOf(0)', function() {
-        result = 'foo'.indexOf('f') === 0;
-      });
+    testberry.test('.charAt(0)', () => {
+      result = 'foo'.charAt(0) === 'f'
+    })
 
-      inspect(result).isTrue();
+    inspect(result).isTrue()
 
-      // And a third one
-      testberry.test('.test()', function() {
-        result = /^f/.test('foo');
-      });
+    // And a third one
+    testberry.test('.test()', () => {
+      result = /^f/.test('foo')
+    })
 
       inspect(result).isTrue();
     });
