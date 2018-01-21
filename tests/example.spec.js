@@ -1,3 +1,5 @@
+'use strict'
+
 let testberry = require('../lib/testberry');
 let inspect = require('inspect.js');
 

@@ -137,7 +137,7 @@ describe('Testberry', function() {
     });
   });
 
-  describe('Benchmark async testing', function() {
+  describe.skip('Benchmark async testing', function() {
     it('String starts with ', function() {
       testberry.testAsync('.setTimeout()', function(done) {
         setTimeout(() => {
