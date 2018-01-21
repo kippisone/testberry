@@ -9,7 +9,7 @@ describe('[Benchmark]', function() {
       let result;
 
       // Calculate evaluation time
-      testberry.test('.startsWith()', function() {
+      testberry.test('.startsWith()', function(done) {
         result = 'foo'.startsWith('f');
       });
 
@@ -17,8 +17,8 @@ describe('[Benchmark]', function() {
       inspect(result).isTrue();
 
       // Next test
-      testberry.test('.indexOf(0)', function() {
-        result = 'foo'.indexOf('f') === 0;
+      testberry.test('.charAt(0)', function() {
+        result = 'foo'.charAt(0) === 'f';
       });
 
       inspect(result).isTrue();
@@ -37,7 +37,7 @@ describe('[Benchmark]', function() {
       let result;
 
       // Calculate evaluation time
-      testberry.perf('.startsWith()', 100, function() {
+      testberry.perf('.startsWith("f")', 100, function() {
         result = 'foo'.startsWith('f');
       });
 
@@ -45,8 +45,8 @@ describe('[Benchmark]', function() {
       inspect(result).isTrue();
 
       // Next test
-      testberry.perf('.indexOf("f")', 100, function() {
-        result = 'foo'.indexOf('f') === 0;
+      testberry.perf('.charAt(0)', 100, function() {
+        result = 'foo'.charAt(0) === 'f';
       });
 
       inspect(result).isTrue();

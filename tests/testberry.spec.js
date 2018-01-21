@@ -152,7 +152,7 @@ describe('Testberry', function() {
       let result;
 
       // Calculate evaluation time
-      testberry.test('.startsWith()', function() {
+      testberry.test('.startsWith()', function(done) {
         result = 'foo'.startsWith('f');
       });
 
