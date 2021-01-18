@@ -6,7 +6,9 @@
   "author": "Andi Heinkelein <andi@noname-media.com>",
   "license": "MIT",
   "scripts": {
-    "test": "mocha --reporter lagoon-reporter tests/*.spec.js"
+    "test": "mocha --reporter lagoon-reporter tests/*.spec.js",
+    "lint": "firelint",
+    "build": "firescript build"
   },
   "repository": {
     "type": "git",
@@ -20,13 +22,11 @@
     "performance"
   ],
   "devDependencies": {
-    "firelint": "^0.5.0",
     "firescript": "^0.16.7",
-    "firescript-test": "^0.10.15",
-    "inspect.js": "^1.12.4",
-    "lagoon-reporter": "^0.7.8",
-    "mocha": "^8.2.1",
-    "sinon": "^9.2.3"
+    "inspect.js": "^0.1.1",
+    "lagoon-reporter": "^0.3.4",
+    "mocha": "^4.0.1",
+    "sinon": "^1.17.4"
   },
   "dependencies": {
     "firescript-runtime": "^0.3.12"
