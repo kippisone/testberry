@@ -1,0 +1,4 @@
+include:
+  - project: 'Coffeebreak/coffeebreak-ci'
+    ref: develop
+    file: 'gitlab/firescript-module-pipeline.yml'
