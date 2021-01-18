@@ -10,8 +10,6 @@ const lgrey = '\u001b[38;5;250m'
 const azure = '\u001b[38;5;39m'
 const uncolor = '\u001b[m'
 
-const performance = performance || null
-
 class TestBerryStub
     constructor (opts = {})
         this.stubDir = opts.stubDir || '${process.cwd()}/tests/stubs'
@@ -107,10 +105,10 @@ export class TestBerry
         if typeof process === 'object'
             return process.hrtime()
 
-        if nt
-            const t2 = performance.now()
-            const left = t2 * 1e6
-            const right = nt  * 1e6
-            return left - right
-
-        return performance.now()
+        # if nt
+        #     const t2 = performance.now()
+        #     const left = t2 * 1e6
+        #     const right = nt  * 1e6
+        #     return left - right
+        #
+        # return performance.now()
