@@ -1,0 +1,18 @@
+{
+  "build": {
+    "destDir": "dist/",
+    "srcDir": "src/",
+    "copyFiles": [
+      "/package.json",
+      "/LICENSE",
+      "/README.md"
+    ]
+  },
+  "features": {
+    "esModules": false,
+    "esDefaultParams": false,
+    "esClasses": true,
+    "esTemplates": true,
+    "extendRegExp": true
+  }
+}

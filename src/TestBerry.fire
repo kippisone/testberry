@@ -1,0 +1,114 @@
+import * as path from 'path'
+import * as fs from 'fs'
+import * as sinon from 'sinon'
+
+const red = '\u001b[38;5;160m'
+const ored = '\u001b[38;5;202m'
+const yellow = '\u001b[38;5;226m'
+const dgrey = '\u001b[38;5;244m'
+const lgrey = '\u001b[38;5;250m'
+const azure = '\u001b[38;5;39m'
+const uncolor = '\u001b[m'
+
+class TestBerryStub
+    constructor (opts = {})
+        this.stubDir = opts.stubDir || '${process.cwd()}/tests/stubs'
+        this.verbose = opts.verbose || false
+        this.record = false
+
+    debug (msg, ...args)
+        if this.verbose
+            log
+                '${yellow}TestBerry${uncolor}:'
+                '${lgrey}${msg}${uncolor}:'
+                ...args
+
+    create (stubName, obj, method)
+        const stubData = this.loadStub(stubName)
+        this.stub = sinon.stub(obj, method)
+        this.stubObj = obj
+        this.stubMethod = method
+
+        this.debug('Create stubs', method,  stubData.stubs.length)
+        for stub of stubData.stubs
+            const s = stub.args ? this.stub.withArgs(...stub.args) : this.stub
+
+            if stub.resolves
+                s.returns(Promise.resolve(stub.resolves))
+
+    restore ()
+        this.stub.restore()
+
+    loadStub (stubPath)
+        try
+            return require(path.resolve(this.stubDir, '${stubPath}.json'))
+        catch err
+            if err.code === 'E_MODULE_NOT_FOUND'
+                throw new Error ('Stub module ${stubPath} not found!')
+
+            throw err
+
+
+export class TestBerry
+    constructor (opts = {})
+        this.opts = opts
+        this.stubDir = opts.stubDir || '${process.cwd()}/tests/stubs'
+
+    stub (...args)
+        const stub = new TestBerryStub(this.opts)
+        stub.create(...args)
+        return stub
+
+    writeStub (stubData)
+        const json = JSON.stringify(stubData, null, '  ')
+        const filename = path.resolve(this.stubDir, '${stubData.name}.json')
+        fs.writeFileSync(filename, JSON.stringify(stubData, null, '  '))
+
+    recordStub (stubName, obj, method)
+        const origMethod = obj[method]
+        obj[method] = (...args) =>
+            log 'NAME' stubName
+            log 'ARGS' args
+
+            const stubReturn = origMethod.call(obj, ...args)
+
+            if stubReturn instanceof Promise
+                stubReturn.then((data) =>
+                    log 'DATA' data
+                    this.writeStub({
+                        name: stubName
+                        stubs: [{
+                            args: args
+                            resolves: data
+                        }]
+                    })
+                    return data
+                ).catch((err) =>
+                    log 'ERR' err.stack
+                )
+
+            return stubReturn
+
+        return {
+            restore()
+                obj[method] = origMethod
+
+        }
+
+
+    loadStub (stubName)
+        const stub = new TestBerryStub(this.opts)
+        return stub.loadStub(stubName)
+
+
+    static getNanoTime(nt)
+        if typeof process === 'object'
+            return process.hrtime()
+
+        if nt
+            const t2 = performance.now()
+            const left = t2 * 1e6
+            const right = nt  * 1e6
+            return left - right
+
+        return performance.now()

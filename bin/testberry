@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+function log(...args) {
+  console.log.call(console, ...args)
+}
+
+log ('   /')
+log(' ⬤⬤ ')
+log('⬤⬤⬤')
+log(' ⬤⬤ ')

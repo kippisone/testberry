@@ -110,10 +110,6 @@ Testberry.bench = function(title, loops, fn) {
   });
 };
 
-Testberry.request = function(title, loops, fn) {
-
-};
-
 Testberry.profile = function(fn, args) {
   args = Array.prototype.slice.call(arguments, 1);
   let funcName = fn.name || 'anonymous function';
@@ -229,10 +225,4 @@ Testberry.getLastProfiling = function() {
   return profilerStack[profilerStack.length - 1];
 }
 
-if (typeof module === 'undefined') {
-  // eslint-disable-next-line
-  window.testberry = Testberry;
-}
-else {
-  module.exports = Testberry;
-}
+module.exports = Testberry;
