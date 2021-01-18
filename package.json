@@ -1,6 +1,6 @@
 {
   "name": "testberry",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Performance and benchmark testing framework",
   "main": "app.js",
   "author": "Andi Heinkelein <andi@noname-media.com>",
