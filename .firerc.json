@@ -5,7 +5,8 @@
     "copyFiles": [
       "/package.json",
       "/LICENSE",
-      "/README.md"
+      "/README.md",
+      "testberry.js"
     ]
   },
   "features": {
