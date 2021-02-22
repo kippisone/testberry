@@ -5,6 +5,8 @@ let Testberry = function() {
 
 };
 
+Testberry.__definitions = {}
+
 // eslint-disable-next-line
 let log = console.log;
 let profilerStack = [];
@@ -97,6 +99,27 @@ Testberry.test = function(title, fn) {
   }
 }
 
+Testberry.testPerf = function(title, duration, fn) {
+  let count = 0;
+  let passed = false;
+  let error;
+
+  try {
+    count = fn(count);
+    passed = true;
+  } catch(err) {
+    error = err.stack || err;
+  }
+
+  if (passed) {
+    log('⏱ ' + title + ' ran ' + count + ' times within ' + Testberry.humanizeTime(duration * 1e6));
+  }
+  else {
+    log('⏱ ' + title + ' failed after ' + count + ' iterations.');
+    log('Error: ' + error);
+  }
+};
+
 Testberry.bench = function(title, loops, fn) {
   if (typeof loops === 'function') {
     fn = loops;
@@ -108,6 +131,32 @@ Testberry.bench = function(title, loops, fn) {
       fn();
     }
   });
+};
+
+Testberry.perf = function(title, duration, fn) {
+  if (typeof duration === 'function') {
+    fn = duration;
+    duration = 1000;
+  }
+
+  Testberry.testPerf(title, duration, function(count) {
+    let run = true;
+    let time = Date.now();
+
+    while (run) {
+      fn();
+      if (Date.now() - time >= duration) {
+        run = false;
+      }
+      count += 1;
+    }
+
+    return count;
+  });
+};
+
+Testberry.request = function(title, loops, fn) {
+
 };
 
 Testberry.profile = function(fn, args) {
@@ -225,4 +274,46 @@ Testberry.getLastProfiling = function() {
   return profilerStack[profilerStack.length - 1];
 }
 
-module.exports = Testberry;
+Testberry.define = function(name, fn) {
+  if (this.__definitions[name]) {
+    throw new Error('Method ' + name + ' already defined');
+  }
+
+  this.__definitions[name] = fn
+}
+
+Testberry.run = function(funcs, ctx) {
+  function next(c) {
+    const fnName = funcs.shift()
+    if (!fnName) {
+      return c
+    }
+
+    const fn = Testberry.__definitions[fnName]
+    if (!fn) {
+      throw new Error('No function defined with name: ' + fnName)
+    }
+
+    const p = fn(c)
+    if (typeof p.then === 'function' && p.catch === 'function') {
+      p.then((res) => {
+        next(res)
+      }).catch((err) => {
+        throw new Error(err)
+      })
+    } else {
+      next(p)
+      return p
+    }
+  }
+
+  return next(ctx || {})
+}
+
+if (typeof module === 'undefined') {
+  // eslint-disable-next-line
+  window.testberry = Testberry;
+}
+else {
+  module.exports = Testberry;
+}
