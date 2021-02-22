@@ -1,6 +1,8 @@
 Testberry
 =========
 
+[![Build Status](https://travis-ci.com/kippisone/testberry.svg?branch=develop)](https://travis-ci.com/kippisone/testberry)
+
 Testberry is a performance and benchmark testing framework for Node.js and Mocha
 
 ## Installation
